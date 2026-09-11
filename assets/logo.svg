@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="petGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#115e59" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#petGrad)" />
+  <!-- Central Paw -->
+  <ellipse cx="100" cy="130" rx="36" ry="28" fill="#ffffff" />
+  <!-- Toes -->
+  <ellipse cx="60" cy="90" rx="14" ry="20" fill="#ffffff" transform="rotate(-15 60 90)" />
+  <ellipse cx="88" cy="72" rx="13" ry="19" fill="#ffffff" />
+  <ellipse cx="112" cy="72" rx="13" ry="19" fill="#ffffff" />
+  <ellipse cx="140" cy="90" rx="14" ry="20" fill="#ffffff" transform="rotate(15 140 90)" />
+  <!-- Heart center emblem -->
+  <path d="M 100 120 C 95 110, 85 110, 85 120 C 85 128, 100 140, 100 140 C 100 140, 115 128, 115 120 C 115 110, 105 110, 100 120 Z" fill="#0d9488" />
+</svg>
