@@ -1,0 +1,24 @@
+{
+  "name": "petcare-management-system",
+  "version": "1.0.0",
+  "description": "Pet Care Management System MVP built using Prototype Software Process Model for RUET CSE 3206",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node -e \"require('./src/db/seed').seedDatabase()\""
+  },
+  "keywords": [
+    "software-engineering",
+    "ruet",
+    "cse3206",
+    "mvp",
+    "prototype-model",
+    "pet-care"
+  ],
+  "author": "Group #07 - RUET CSE (3 Team Members)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

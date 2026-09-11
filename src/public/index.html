@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetCare - MVP Management System | RUET CSE 3206</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Global Top Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand" onclick="navigateTo('dashboard')">
+        <div class="brand-icon">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">PetCare<span class="accent-dot">.</span></span>
+          <span class="brand-tag">MVP Prototype</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-item active" id="nav-dashboard" onclick="navigateTo('dashboard')">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </button>
+        <button class="nav-item" id="nav-pets" onclick="navigateTo('pets')">
+          <i class="fa-solid fa-dog"></i> Pet Profiles
+        </button>
+        <button class="nav-item" id="nav-appointments" onclick="navigateTo('appointments')">
+          <i class="fa-solid fa-calendar-check"></i> Appointments
+        </button>
+        <button class="nav-item" id="nav-report" onclick="navigateTo('report')">
+          <i class="fa-solid fa-file-lines"></i> Process Model Info
+        </button>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Auth state container -->
+        <div id="auth-state-box" class="user-profile-badge">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Banner / Prototype notice -->
+  <div class="prototype-banner">
+    <div class="banner-inner">
+      <i class="fa-solid fa-circle-info"></i>
+      <span><strong>Lab 2 Prototype Model Demonstration:</strong> Built iteratively by 3 members using collaborative Git branching (<code>member1-feature</code>, <code>member2-feature</code>, <code>member3-feature</code>).</span>
+      <button class="badge-tag" onclick="navigateTo('report')">View Engineering Details</button>
+    </div>
+  </div>
+
+  <!-- Main Workspace Content -->
+  <main class="main-content">
+
+    <!-- VIEW 1: DASHBOARD (Member 3 & Member 1) -->
+    <section id="view-dashboard" class="page-view active">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Pet Care Overview</h1>
+          <p class="view-subtitle">Real-time status of pets, medical alerts, and scheduled clinical services.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="openBookAppointmentModal()">
+            <i class="fa-solid fa-plus"></i> Book Service
+          </button>
+          <button class="btn btn-secondary" onclick="openPetModal()">
+            <i class="fa-solid fa-shield-cat"></i> Register Pet
+          </button>
+          <button class="btn btn-outline" title="Reset Demo Data" onclick="resetSampleData()">
+            <i class="fa-solid fa-rotate-right"></i> Reset Demo Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon icon-emerald">
+            <i class="fa-solid fa-paw"></i>
+          </div>
+          <div class="stat-data">
+            <span class="stat-label">Total Registered Pets</span>
+            <span class="stat-value" id="stat-total-pets">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon icon-blue">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <div class="stat-data">
+            <span class="stat-label">Upcoming Appointments</span>
+            <span class="stat-value" id="stat-upcoming-appts">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon icon-amber">
+            <i class="fa-solid fa-syringe"></i>
+          </div>
+          <div class="stat-data">
+            <span class="stat-label">Vaccines Due / Overdue</span>
+            <span class="stat-value" id="stat-vaccines-due">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon icon-purple">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div class="stat-data">
+            <span class="stat-label">Completed Services</span>
+            <span class="stat-value" id="stat-completed-appts">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-column Section: Upcoming Schedule & Quick Health Alerts -->
+      <div class="dashboard-columns">
+        <div class="card card-flex">
+          <div class="card-header">
+            <h3><i class="fa-regular fa-clock"></i> Upcoming Scheduled Visits</h3>
+            <button class="btn-text" onclick="navigateTo('appointments')">View All &rarr;</button>
+          </div>
+          <div class="card-body" id="dashboard-upcoming-list">
+            <!-- Dynamic rows -->
+          </div>
+        </div>
+
+        <div class="card card-flex">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-triangle-exclamation"></i> Immediate Health & Vaccination Alerts</h3>
+            <button class="btn-text" onclick="navigateTo('pets')">Manage Pets &rarr;</button>
+          </div>
+          <div class="card-body" id="dashboard-health-alerts">
+            <!-- Dynamic alerts -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: PET PROFILES (Member 2) -->
+    <section id="view-pets" class="page-view">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Pet Profiles & Medical Records</h1>
+          <p class="view-subtitle">Manage registered pets, biometric profiles, allergy histories, and vaccinations.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="openPetModal()">
+            <i class="fa-solid fa-plus"></i> Add New Pet
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search Toolbar -->
+      <div class="toolbar-card">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="pet-search-input" placeholder="Search by pet name or breed..." oninput="filterPets()">
+        </div>
+        <div class="filter-pills" id="species-filter-group">
+          <button class="filter-pill active" onclick="setSpeciesFilter('All')">All Species</button>
+          <button class="filter-pill" onclick="setSpeciesFilter('Dog')"><i class="fa-solid fa-dog"></i> Dogs</button>
+          <button class="filter-pill" onclick="setSpeciesFilter('Cat')"><i class="fa-solid fa-cat"></i> Cats</button>
+          <button class="filter-pill" onclick="setSpeciesFilter('Rabbit')"><i class="fa-solid fa-carrot"></i> Rabbits</button>
+          <button class="filter-pill" onclick="setSpeciesFilter('Other')"><i class="fa-solid fa-feather"></i> Other</button>
+        </div>
+      </div>
+
+      <!-- Pets Grid -->
+      <div class="pets-grid" id="pets-container">
+        <!-- Rendered by pets.js -->
+      </div>
+    </section>
+
+    <!-- VIEW 3: APPOINTMENTS (Member 3) -->
+    <section id="view-appointments" class="page-view">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">Clinical & Care Appointments</h1>
+          <p class="view-subtitle">Schedule, track, and complete clinical checkups, vaccinations, and grooming.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="openBookAppointmentModal()">
+            <i class="fa-solid fa-plus"></i> Book Appointment
+          </button>
+        </div>
+      </div>
+
+      <!-- Appointment Status Filter Tabs -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="setAppointmentTab('All')">All Bookings</button>
+        <button class="tab-btn" onclick="setAppointmentTab('Scheduled')">Scheduled</button>
+        <button class="tab-btn" onclick="setAppointmentTab('Completed')">Completed</button>
+        <button class="tab-btn" onclick="setAppointmentTab('Cancelled')">Cancelled</button>
+      </div>
+
+      <!-- Appointments Table / Cards -->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Pet & Species</th>
+              <th>Owner & Contact</th>
+              <th>Service Type</th>
+              <th>Date & Time</th>
+              <th>Veterinarian</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="appointments-tbody">
+            <!-- Rendered by appointments.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW 4: PROCESS MODEL & LAB REPORT OVERVIEW -->
+    <section id="view-report" class="page-view">
+      <div class="view-header">
+        <div>
+          <h1 class="view-title">RUET CSE 3206 Engineering Specification</h1>
+          <p class="view-subtitle">Software Process Model Justification, Requirement Analysis & Team Work Division.</p>
+        </div>
+        <div class="header-actions">
+          <a href="/docs/Requirement_Report.pdf" target="_blank" class="btn btn-primary">
+            <i class="fa-solid fa-file-pdf"></i> Download Official PDF Report
+          </a>
+        </div>
+      </div>
+
+      <div class="report-grid">
+        <!-- Model Selection Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-code-branch"></i> Selected Software Process Model: Prototype Model</h3>
+          </div>
+          <div class="card-body">
+            <p><strong>Why Prototype Model is Optimal:</strong></p>
+            <ul class="bullet-list">
+              <li><strong>Evolving User Requirements:</strong> Pet owners and clinic staff have diverse, qualitative workflows (e.g., vaccination alerts, grooming scheduling, health history cards) that are difficult to freeze initially.</li>
+              <li><strong>Early Usability & Visual Feedback:</strong> Developing this working prototype allows real veterinary stakeholders to interact with the appointment scheduling lifecycle and biometric cards before building heavy billing or enterprise modules.</li>
+              <li><strong>Reduced Risk of Rework:</strong> Ambiguities in medical alerts and species categorization are resolved early in Lab 2, setting a solid foundation for future labs on Design Patterns and Testing.</li>
+            </ul>
+
+            <h4 style="margin-top: 15px;">Comparative Analysis with Alternatives:</h4>
+            <div class="comparison-box">
+              <div class="comp-item">
+                <span class="badge badge-danger">Waterfall: Unsuitable</span>
+                <p>Waterfall strictly forbids requirement iteration after the analysis phase. In pet care management, rigid upfront specs risk delivering an unusable appointment workflow that cannot adapt to clinical needs.</p>
+              </div>
+              <div class="comp-item">
+                <span class="badge badge-warning">Spiral: Excessive Overhead</span>
+                <p>Spiral is tailored for high-risk, mission-critical systems (aerospace, kernel banking). Its multi-tiered mathematical risk assessments introduce unnecessary bureaucratic latency for an MVP milestone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Work Division Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-users-gear"></i> 3-Member Collaborative Team Structure</h3>
+          </div>
+          <div class="card-body">
+            <div class="team-cards-vertical">
+              <div class="team-member-box">
+                <div class="member-badge">Member 1</div>
+                <div>
+                  <strong>System Architect & Auth Lead (Branch: <code>member1-feature</code>)</strong>
+                  <p class="text-muted">Core Express architecture, SQLite database schema, user authentication & role switcher, base navigation shell, and Report Sections 1-5 & 10-12.</p>
+                </div>
+              </div>
+
+              <div class="team-member-box">
+                <div class="member-badge">Member 2</div>
+                <div>
+                  <strong>Pet Profile & Medical Records Lead (Branch: <code>member2-feature</code>)</strong>
+                  <p class="text-muted">Pet CRUD endpoints, species/breed categorization, vaccination history, allergy tracking, and Report Sections 6-9 (12 FRs & 8 NFRs).</p>
+                </div>
+              </div>
+
+              <div class="team-member-box">
+                <div class="member-badge">Member 3</div>
+                <div>
+                  <strong>Appointments & Dashboard Analytics Lead (Branch: <code>member3-feature</code>)</strong>
+                  <p class="text-muted">Appointment booking lifecycle, status transitions, metric calculations, demo seeding, and Report Sections 13-16 + PDF generation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: Login / Register (Member 1) -->
+  <div id="modal-auth" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="auth-modal-title">Sign In to PetCare</h2>
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" id="tab-login" onclick="switchAuthMode('login')">Sign In</button>
+          <button class="auth-tab-btn" id="tab-register" onclick="switchAuthMode('register')">Create Account</button>
+        </div>
+
+        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+          <div class="form-group hidden" id="group-name">
+            <label>Full Name</label>
+            <input type="text" id="auth-name" placeholder="e.g. John Doe">
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="auth-email" required placeholder="name@example.com">
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="auth-password" required placeholder="••••••••">
+          </div>
+
+          <div class="form-group hidden" id="group-role">
+            <label>Account Role</label>
+            <select id="auth-role">
+              <option value="owner">Pet Owner</option>
+              <option value="staff">Veterinary / Clinic Staff</option>
+            </select>
+          </div>
+
+          <div class="form-group hidden" id="group-phone">
+            <label>Contact Phone</label>
+            <input type="text" id="auth-phone" placeholder="+880 1712-345678">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="auth-submit-btn">
+            Sign In
+          </button>
+        </form>
+
+        <div class="quick-demo-logins">
+          <span>Quick Demo Access:</span>
+          <div class="demo-buttons">
+            <button type="button" class="btn btn-xs" onclick="quickLogin('sarah.owner@petcare.com')">Pet Owner (Sarah)</button>
+            <button type="button" class="btn btn-xs" onclick="quickLogin('dr.rahman@petcare.com')">Veterinarian (Dr. Rahman)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add / Edit Pet (Member 2) -->
+  <div id="modal-pet" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="pet-modal-title">Register Pet Profile</h2>
+        <button class="modal-close" onclick="closePetModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="pet-form" onsubmit="handlePetSubmit(event)">
+          <input type="hidden" id="pet-id">
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Pet Name *</label>
+              <input type="text" id="pet-name" required placeholder="e.g. Max">
+            </div>
+            <div class="form-group col">
+              <label>Species *</label>
+              <select id="pet-species" required onchange="handleSpeciesChange()">
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Rabbit">Rabbit</option>
+                <option value="Bird">Bird</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Breed *</label>
+              <input type="text" id="pet-breed" required placeholder="e.g. Golden Retriever">
+            </div>
+            <div class="form-group col">
+              <label>Gender *</label>
+              <select id="pet-gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Age (Years) *</label>
+              <input type="number" id="pet-age" required min="0" max="40" step="1" value="2">
+            </div>
+            <div class="form-group col">
+              <label>Weight (kg) *</label>
+              <input type="number" id="pet-weight" required min="0.1" max="150" step="0.1" value="10">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Microchip / Identification Tag</label>
+            <input type="text" id="pet-microchip" placeholder="e.g. CHIP-12345-BD">
+          </div>
+
+          <div class="form-group">
+            <label>Known Allergies</label>
+            <input type="text" id="pet-allergies" placeholder="e.g. Chicken poultry, Pollen, None">
+          </div>
+
+          <div class="form-group">
+            <label>Vaccination Status</label>
+            <select id="pet-vax-status">
+              <option value="Up-to-Date">Up-to-Date</option>
+              <option value="Due Soon">Due Soon</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Veterinary & Behavioral Notes</label>
+            <textarea id="pet-notes" rows="2" placeholder="Temperament, dietary preferences, or medical observations..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="pet-submit-btn">
+            Save Pet Profile
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: View Pet Health Card & Add Vaccine (Member 2) -->
+  <div id="modal-pet-details" class="modal-overlay hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h2 id="pet-detail-title">Pet Medical Record</h2>
+        <button class="modal-close" onclick="closePetDetailModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="pet-detail-body">
+        <!-- Injected via pets.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Book Appointment (Member 3) -->
+  <div id="modal-appointment" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Schedule Veterinary / Care Service</h2>
+        <button class="modal-close" onclick="closeBookAppointmentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="appointment-form" onsubmit="handleAppointmentSubmit(event)">
+          <div class="form-group">
+            <label>Select Pet *</label>
+            <select id="appt-pet-id" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Service Type *</label>
+            <select id="appt-service-type" required>
+              <option value="General Checkup">General Health Checkup ($35)</option>
+              <option value="Vaccination">Vaccination / Booster Shot ($45)</option>
+              <option value="Grooming & Spa">Grooming & Spa Treatment ($30)</option>
+              <option value="Dental Cleaning">Dental Cleaning ($50)</option>
+              <option value="Surgery Consultation">Surgery Consultation ($60)</option>
+              <option value="Emergency">Emergency Urgent Care ($75)</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Date *</label>
+              <input type="date" id="appt-date" required>
+            </div>
+            <div class="form-group col">
+              <label>Time Slot *</label>
+              <select id="appt-time" required>
+                <option value="09:00 AM">09:00 AM</option>
+                <option value="10:00 AM">10:00 AM</option>
+                <option value="11:30 AM">11:30 AM</option>
+                <option value="02:00 PM">02:00 PM</option>
+                <option value="03:30 PM">03:30 PM</option>
+                <option value="05:00 PM">05:00 PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Attending Veterinarian / Specialist</label>
+            <select id="appt-vet">
+              <option value="Dr. K. Rahman (Chief Vet)">Dr. K. Rahman (Chief Vet - General & Surgery)</option>
+              <option value="Dr. Anika Tabassum (Vaccine Specialist)">Dr. Anika Tabassum (Vaccine Specialist)</option>
+              <option value="PetCare Grooming Team">PetCare Grooming & Spa Team</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Reason / Specific Symptoms</label>
+            <textarea id="appt-notes" rows="2" placeholder="Describe symptoms or special instructions for the care team..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Confirm Booking
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+  <script src="/js/pets.js"></script>
+  <script src="/js/appointments.js"></script>
+</body>
+</html>
