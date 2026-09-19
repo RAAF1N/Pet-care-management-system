@@ -32,7 +32,7 @@
           <i class="fa-solid fa-calendar-check"></i> Appointments
         </button>
         <button class="nav-item" id="nav-report" onclick="navigateTo('report')">
-          <i class="fa-solid fa-file-lines"></i> Process Model Info
+          <i class="fa-solid fa-users"></i> Team Info
         </button>
       </nav>
 
@@ -44,15 +44,6 @@
       </div>
     </div>
   </header>
-
-  <!-- Notification Banner / Prototype notice -->
-  <div class="prototype-banner">
-    <div class="banner-inner">
-      <i class="fa-solid fa-circle-info"></i>
-      <span><strong>Lab 2 Prototype Model Demonstration:</strong> Built iteratively by 3 members using collaborative Git branching (<code>member1-feature</code>, <code>member2-feature</code>, <code>member3-feature</code>).</span>
-      <button class="badge-tag" onclick="navigateTo('report')">View Engineering Details</button>
-    </div>
-  </div>
 
   <!-- Main Workspace Content -->
   <main class="main-content">
@@ -222,12 +213,12 @@
       </div>
     </section>
 
-    <!-- VIEW 4: PROCESS MODEL & LAB REPORT OVERVIEW -->
+    <!-- VIEW 4: TEAM INFORMATION -->
     <section id="view-report" class="page-view">
       <div class="view-header">
         <div>
-          <h1 class="view-title">RUET CSE 3206 Engineering Specification</h1>
-          <p class="view-subtitle">Software Process Model Justification, Requirement Analysis & Team Work Division.</p>
+          <h1 class="view-title">PetCare Team</h1>
+          <p class="view-subtitle">Meet the team behind the PetCare management system.</p>
         </div>
         <div class="header-actions">
           <a href="/docs/Requirement_Report.pdf" target="_blank" class="btn btn-primary">
@@ -237,33 +228,6 @@
       </div>
 
       <div class="report-grid">
-        <!-- Model Selection Card -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fa-solid fa-code-branch"></i> Selected Software Process Model: Prototype Model</h3>
-          </div>
-          <div class="card-body">
-            <p><strong>Why Prototype Model is Optimal:</strong></p>
-            <ul class="bullet-list">
-              <li><strong>Evolving User Requirements:</strong> Pet owners and clinic staff have diverse, qualitative workflows (e.g., vaccination alerts, grooming scheduling, health history cards) that are difficult to freeze initially.</li>
-              <li><strong>Early Usability & Visual Feedback:</strong> Developing this working prototype allows real veterinary stakeholders to interact with the appointment scheduling lifecycle and biometric cards before building heavy billing or enterprise modules.</li>
-              <li><strong>Reduced Risk of Rework:</strong> Ambiguities in medical alerts and species categorization are resolved early in Lab 2, setting a solid foundation for future labs on Design Patterns and Testing.</li>
-            </ul>
-
-            <h4 style="margin-top: 15px;">Comparative Analysis with Alternatives:</h4>
-            <div class="comparison-box">
-              <div class="comp-item">
-                <span class="badge badge-danger">Waterfall: Unsuitable</span>
-                <p>Waterfall strictly forbids requirement iteration after the analysis phase. In pet care management, rigid upfront specs risk delivering an unusable appointment workflow that cannot adapt to clinical needs.</p>
-              </div>
-              <div class="comp-item">
-                <span class="badge badge-warning">Spiral: Excessive Overhead</span>
-                <p>Spiral is tailored for high-risk, mission-critical systems (aerospace, kernel banking). Its multi-tiered mathematical risk assessments introduce unnecessary bureaucratic latency for an MVP milestone.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Team Work Division Card -->
         <div class="card">
           <div class="card-header">
@@ -272,7 +236,7 @@
           <div class="card-body">
             <div class="team-cards-vertical">
               <div class="team-member-box">
-                <div class="member-badge">Member 1</div>
+                <div class="member-badge">Rafin</div>
                 <div>
                   <strong>System Architect & Auth Lead (Branch: <code>member1-feature</code>)</strong>
                   <p class="text-muted">Core Express architecture, SQLite database schema, user authentication & role switcher, base navigation shell, and Report Sections 1-5 & 10-12.</p>
@@ -280,7 +244,7 @@
               </div>
 
               <div class="team-member-box">
-                <div class="member-badge">Member 2</div>
+                <div class="member-badge">Rakib</div>
                 <div>
                   <strong>Pet Profile & Medical Records Lead (Branch: <code>member2-feature</code>)</strong>
                   <p class="text-muted">Pet CRUD endpoints, species/breed categorization, vaccination history, allergy tracking, and Report Sections 6-9 (12 FRs & 8 NFRs).</p>
@@ -288,7 +252,7 @@
               </div>
 
               <div class="team-member-box">
-                <div class="member-badge">Member 3</div>
+                <div class="member-badge">Tausif</div>
                 <div>
                   <strong>Appointments & Dashboard Analytics Lead (Branch: <code>member3-feature</code>)</strong>
                   <p class="text-muted">Appointment booking lifecycle, status transitions, metric calculations, demo seeding, and Report Sections 13-16 + PDF generation.</p>
